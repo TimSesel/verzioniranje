@@ -33,12 +33,14 @@ def filtriraj_sobel_smer(slika):
 
 if __name__ == '__main__':
     slika = cv.imread("Lenna_(test_image).png")
-    cv.imshow("Originalna slika")
+    cv.imshow("Originalna slika", slika)
     cv.waitKey(0)
 
     # --------------------------------- Konvolucija ---------------------------------
     x = 0.1
-    jedro = np.array([[x, x, x], [x, x, x], [x, x, x]])
+    y_jedro = 3
+    x_jedro = 3
+    jedro = np.full((y_jedro, x_jedro), x)
     konvolucirana_slika = konvolucija(slika.astype(np.float32) / 255.0, jedro.astype(np.float32))
 
     cv.imshow("Konvolucija", konvolucirana_slika)
