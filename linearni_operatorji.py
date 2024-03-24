@@ -42,7 +42,7 @@ def filtriraj_z_gaussovim_jedrom(slika, sigma):
     return konvolucija(slika, jedro)
 
 def filtriraj_sobel_horizontalno(slika):
-    jedro = np.array([[1, 2, 1], [0, 0, 0], [-1, -2 -1]], dtype=np.float32)
+    jedro = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
     return konvolucija(slika, jedro)
 
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     cv.waitKey(0)
 
     # --------------------------------- Konvolucija ---------------------------------
-    x = 0.2
+    x = 0.1
     y_jedro = 3
     x_jedro = 3
     jedro = np.full((y_jedro, x_jedro), x, dtype=np.float32)
@@ -71,7 +71,16 @@ if __name__ == '__main__':
     # --------------------------------- Sobel ---------------------------------
     sobel_slika = filtriraj_sobel_horizontalno(slika.copy().astype(np.float32) / 255.0)
 
+    mejni_gradient = 100 / 255
+    barva = (0 / 255, 0 / 255, 255 / 255)
+    for i in range(0, sobel_slika.shape[0]):
+        for j in range(0, sobel_slika.shape[1]):
+            stanje_gradienta = sobel_slika[i, j][0] > mejni_gradient or sobel_slika[i, j][1] > mejni_gradient or sobel_slika[i, j][2] > mejni_gradient
+            if stanje_gradienta:
+                sobel_slika[i, j] = barva
+
     cv.imshow("Sobel", sobel_slika)
     cv.waitKey(0)
+    cv.destroyAllWindows()
 
     pass
