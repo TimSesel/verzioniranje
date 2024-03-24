@@ -1,5 +1,6 @@
 import cv2 as cv
 import numpy as np
+import math
 
 def konvolucija(slika, jedro):
     y_slika, x_slika = slika.shape[:2]
@@ -26,7 +27,15 @@ def konvolucija(slika, jedro):
     return nova_slika
 
 def filtriraj_z_gaussovim_jedrom(slika, sigma):
-    pass
+    velikost_jedra = ((2 * sigma) * 2) + 1
+    k = (velikost_jedra / 2) - 0.5
+    jedro = np.zeros((velikost_jedra, velikost_jedra), dtype=np.float32)
+
+    for i in range(0, velikost_jedra):
+        for j in range(0, velikost_jedra):
+            jedro[i, j] ((1 / (2 * math.pi * (sigma ** 2))) * math.e) ** (-((((i - k - 1) ** 2) + ((j - k - 1) ** 2)) / (2 * (sigma ** 2))))
+
+    return konvolucija(slika, jedro)
 
 def filtriraj_sobel_smer(slika):
     pass
@@ -41,7 +50,14 @@ if __name__ == '__main__':
     y_jedro = 3
     x_jedro = 3
     jedro = np.full((y_jedro, x_jedro), x)
-    konvolucirana_slika = konvolucija(slika.astype(np.float32) / 255.0, jedro.astype(np.float32))
+    konvolucirana_slika = konvolucija(slika.copy().astype(np.float32) / 255.0, jedro.astype(np.float32))
+
+    cv.imshow("Konvolucija", konvolucirana_slika)
+    cv.waitKey(0)
+
+    # --------------------------------- Gauss ---------------------------------
+    sigma = 3.0
+    gauss_slika = filtriraj_z_gaussovim_jedrom(slika.copy().astype(np.float32) / 255.0, sigma)
 
     cv.imshow("Konvolucija", konvolucirana_slika)
     cv.waitKey(0)
