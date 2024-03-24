@@ -2,17 +2,24 @@ import cv2 as cv
 import numpy as np
 
 def konvolucija(slika, jedro):
-    y_slika, x_slika = slika.shape
-    y_jedro, x_jedro = jedro.shape
+    y_slika, x_slika = slika.shape[:2]
+    y_jedro, x_jedro = jedro.shape[:2]
     nova_slika = slika
 
-    for i in range(0, y_slika - y_jedro + 1):
-        for j in range(0, x_slika - x_jedro + 1):
+    for i in range(0, y_slika):
+        for j in range(0, x_slika):
             nov_piksel = 0
 
             for k in range(0, y_jedro):
                 for l in range(0, x_jedro):
-                    nov_piksel += slika[i+k, j+l] * jedro[k, l]
+                    if i+k < y_slika and j+l < x_slika:
+                        nov_piksel += slika[i+k, j+l] * jedro[k, l]
+                    elif i+k >= y_slika and j+l < x_slika:
+                        nov_piksel += slika[i, j+l] * jedro[k, l]
+                    elif i+k < y_slika and j+l >= x_slika:
+                        nov_piksel += slika[i+k, j] * jedro[k, l]
+                    else:
+                        nov_piksel += slika[i, j] * jedro[k, l]
 
             nova_slika[i, j] = nov_piksel
 
@@ -26,13 +33,13 @@ def filtriraj_sobel_smer(slika):
 
 if __name__ == '__main__':
     slika = cv.imread("Lenna_(test_image).png")
-    cv.imshow("Originalna slika", slika)
+    cv.imshow("Originalna slika")
     cv.waitKey(0)
 
     # --------------------------------- Konvolucija ---------------------------------
-    x = 1.0
+    x = 0.1
     jedro = np.array([[x, x, x], [x, x, x], [x, x, x]])
-    konvolucirana_slika = konvolucija(slika.astype(np.float32), jedro.astype(np.float32))
+    konvolucirana_slika = konvolucija(slika.astype(np.float32) / 255.0, jedro.astype(np.float32))
 
     cv.imshow("Konvolucija", konvolucirana_slika)
     cv.waitKey(0)
