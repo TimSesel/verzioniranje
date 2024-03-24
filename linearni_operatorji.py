@@ -41,8 +41,10 @@ def filtriraj_z_gaussovim_jedrom(slika, sigma):
 
     return konvolucija(slika, jedro)
 
-def filtriraj_sobel_smer(slika):
-    pass
+def filtriraj_sobel_horizontalno(slika):
+    jedro = np.array([[1, 2, 1], [0, 0, 0], [-1, -2 -1]], dtype=np.float32)
+
+    return konvolucija(slika, jedro)
 
 if __name__ == '__main__':
     slika = cv.imread("Lenna_(test_image).png")
@@ -53,8 +55,8 @@ if __name__ == '__main__':
     x = 0.2
     y_jedro = 3
     x_jedro = 3
-    jedro = np.full((y_jedro, x_jedro), x)
-    konvolucirana_slika = konvolucija(slika.copy().astype(np.float32) / 255.0, jedro.astype(np.float32))
+    jedro = np.full((y_jedro, x_jedro), x, dtype=np.float32)
+    konvolucirana_slika = konvolucija(slika.copy().astype(np.float32) / 255.0, jedro)
 
     cv.imshow("Konvolucija", konvolucirana_slika)
     cv.waitKey(0)
@@ -63,7 +65,13 @@ if __name__ == '__main__':
     sigma = 2.0
     gauss_slika = filtriraj_z_gaussovim_jedrom(slika.copy().astype(np.float32) / 255.0, sigma)
 
-    cv.imshow("Gauss", konvolucirana_slika)
+    cv.imshow("Gauss", gauss_slika)
+    cv.waitKey(0)
+
+    # --------------------------------- Sobel ---------------------------------
+    sobel_slika = filtriraj_sobel_horizontalno(slika.copy().astype(np.float32) / 255.0)
+
+    cv.imshow("Sobel", sobel_slika)
     cv.waitKey(0)
 
     pass
