@@ -62,7 +62,7 @@ if __name__ == '__main__':
     cv.waitKey(0)
 
     # --------------------------------- Gauss ---------------------------------
-    sigma = 1
+    sigma = 3
     gauss_slika = filtriraj_z_gaussovim_jedrom(slika.copy().astype(np.float32) / 255.0, sigma)
 
     cv.imshow("Gauss", gauss_slika)
