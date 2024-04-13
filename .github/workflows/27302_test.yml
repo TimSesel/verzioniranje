@@ -7,11 +7,14 @@ jobs:
     name: Obstoj testnih skript
     runs-on: ubuntu-latest
     steps:
+      - name: Uporaba Checkout na repozitoiju
+        uses: actions/checkout@v4
+
       - shell: bash
         run: |
           touch napaka.txt 
           if [ ! -d "tests" ]; then
-            ls > napaka.txt
+            echo "Napaka: Testni direktorij ne obstaja." > napaka.txt
           elif [ ! -f "tests/test.py"]; then
             echo "Napaka: Test ne obstaja." > napaka.txt
           fi
