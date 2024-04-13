@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.append(os.getcwd())
+
 import linearni_operatorji
 import numpy as np
 import cv2 as cv

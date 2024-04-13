@@ -15,10 +15,8 @@ jobs:
           touch napaka.txt 
           if [ ! -d "tests" ]; then
             echo "Napaka: Testni direktorij ne obstaja." > napaka.txt
-            cat napaka.txt
           elif [ ! -f "tests/test.py"]; then
             echo "Napaka: Test ne obstaja." > napaka.txt
-            cat napaka.txt
           fi
 
       - name: Naloži rezultate za prvi posel
