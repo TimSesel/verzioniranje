@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import math
+import pytest
 
 def konvolucija(slika, jedro):
     y_slika, x_slika = slika.shape[:2]
