@@ -82,7 +82,6 @@ if __name__ == '__main__':
 
     cv.imshow("Sobel", sobel_slika)
     cv.waitKey(0)
-
     cv.destroyAllWindows()
 
     pass
