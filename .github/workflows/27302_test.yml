@@ -3,7 +3,7 @@ name: 27302_test
 # Skripta se izvrši kadar se zgodi postisk na main vejo
 on: 
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   # Prvi posel, ki preveri obstoj testne kode
