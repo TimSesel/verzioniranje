@@ -73,7 +73,7 @@ if __name__ == '__main__':
     sobel_slika = filtriraj_sobel_horizontalno(slika.copy().astype(np.float32) / 255.0)
 
     mejni_gradient = 100 / 255
-    barva = (0 / 255, 0 / 255, 255 / 255)
+    barva = (0 / 255, 100 / 255, 255 / 255)
     for i in range(0, sobel_slika.shape[0]):
         for j in range(0, sobel_slika.shape[1]):
             stanje_gradienta = sobel_slika[i, j][0] > mejni_gradient or sobel_slika[i, j][1] > mejni_gradient or sobel_slika[i, j][2] > mejni_gradient
@@ -82,6 +82,7 @@ if __name__ == '__main__':
 
     cv.imshow("Sobel", sobel_slika)
     cv.waitKey(0)
+
     cv.destroyAllWindows()
 
     pass
