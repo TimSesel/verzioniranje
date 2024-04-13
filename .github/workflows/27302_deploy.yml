@@ -1,9 +1,11 @@
 name: 27302_deploy
 
+# Iz github skrivnosti naložimo podatke o Docker računu
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   REPONAME: ${{ secrets.REPO_NAME }}
+# Razjasnimo da bo se ta skripta izvršila ob uspešni zaključitvi test skripte
 on:
   workflow_run:
     workflows: ["27302_test"]
@@ -14,17 +16,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Naloži repozitorij v okolje runnerja, tako zagotovi veljavne naslove direktorijev
       - name: Uporaba Checkout na repozitoriju
         uses: actions/checkout@v4
 
+      # Prijavimo se v Docker
       - name: Prijava v Docker
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
+      # Z pripravljeno skripto se zgradi Docker slika
       - name: Zgradi docker sliko
         run: |
           bash zapakiraj_27302.sh $DOCKER_USERNAME $REPONAME
 
+      # Paket se potisne na DockerHub
       - name: Potisni docker sliko
         run: |
           docker push "$DOCKER_USERNAME/$REPONAME:latest"
