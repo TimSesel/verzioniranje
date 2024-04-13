@@ -22,7 +22,8 @@ jobs:
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Zgradi docker sliko
-        run: ./zapakiraj_27303.sh $DOCKER_USERNAME $REPONAME
+        run: |
+          bash zapakiraj_27303.sh $DOCKER_USERNAME $REPONAME
 
       - name: Potisni docker sliko
         run: |
