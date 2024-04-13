@@ -11,7 +11,7 @@ jobs:
         run: |
           touch napaka.txt 
           if [ ! -d "tests" ]; then
-            echo "Napaka: Testni direktorij ne obstaja." > napaka.txt
+            ls > napaka.txt
           elif [ ! -f "tests/test.py"]; then
             echo "Napaka: Test ne obstaja." > napaka.txt
           fi
