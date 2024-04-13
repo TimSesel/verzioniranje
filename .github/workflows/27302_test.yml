@@ -58,4 +58,4 @@ jobs:
         run: pip install numpy opencv-python pytest
 
       - name: Zaženi teste
-        run: tests/test.py
+        run: python tests/test.py
