@@ -1,15 +1,21 @@
 name: 27302_test
 
-on: [push]
+# Skripta se izvrši kadar se zgodi postisk na main vejo
+on: 
+  push:
+    branches: [ main ]
 
 jobs:
+  # Prvi posel, ki preveri obstoj testne kode
   posel_1:
     name: Obstoj testnih skript
     runs-on: ubuntu-latest
     steps:
+      # Naloži repozitorij v okolje runnerja, tako zagotovi veljavne naslove direktorijev
       - name: Uporaba Checkout na repozitoiju
         uses: actions/checkout@v4
 
+      # Izvrši se bash koda, ki preveri ali obstaja testni program (tests/test.py), v primeru, da ne obstaja, se to zapiše v napaka.txt
       - shell: bash
         run: |
           touch napaka.txt 
@@ -19,28 +25,34 @@ jobs:
             echo "Napaka: Test ne obstaja." > napaka.txt
           fi
 
+      # napaka.txt je naložena v artefakt
       - name: Naloži rezultate za prvi posel
         uses: actions/upload-artifact@v4
         with:
           name: stanje_napak
           path: napaka.txt
     
+  # Drugi posel, ki preveri ali se je prvi pravilno izvršiv, nato pa izvede preizkus
   posel_2:
     name: Zaženi testne skripte
     needs: posel_1
     runs-on: ubuntu-latest
+    # Ustvari se matrika, ki bo izvedla skripto nad različnimi python verzijami
     strategy:
       matrix:
         python-version: [3.8, 3.9]
     steps:
+      # Naloži repozitorij v okolje runnerja, tako zagotovi veljavne naslove direktorijev
       - name: Uporaba Checkout na repozitoiju
         uses: actions/checkout@v4
 
+      # Pridobi se artefakt iz prejšnjega posla
       - name: Preveri stanje prejšnjega posla
         uses: actions/download-artifact@v4
         with:
           name: stanje_napak
       
+      # Izvrši se bash ukaz, ki preveri, če se je kaj zapisalo v napaka.txt, če se je bo program se končal in test bo vrnil napako
       - shell: bash
         run: |
           file="napaka.txt"
@@ -52,13 +64,16 @@ jobs:
             fi
           fi
       
+      # Namesti se python predpisanih verzij
       - name: Namesti python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version}}
 
+      # Namestijo se python knjižnice, s tem se pripravi izvajalno okolje
       - name: Namesti knjižnice
         run: pip install numpy opencv-python pytest
 
+      # Zažene se program za testiranje
       - name: Zaženi teste
         run: python tests/test.py

@@ -1,0 +1,1 @@
+docker build . --file Dockerfile --tag "$DOCKER_USERNAME/$REPONAME:latest"

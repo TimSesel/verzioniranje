@@ -7,6 +7,8 @@ import linearni_operatorji
 import numpy as np
 import cv2 as cv
 
+# Test bo izvršil funkcijo iz glavnega programa linearni_operatorji
+# Če slika med konvolucijo spremeni dimenzije (slika.shape[:2]), bo test zaznal napako
 def test():
     slika = cv.imread("Lenna_(test_image).png")
     x = 0.1
